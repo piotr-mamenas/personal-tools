@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity.ModelConfiguration;
+using wR.Core;
 
 namespace wR.DAL.Configurations
 {
-    class BaseEntityConfiguration
+    public class BaseEntityConfiguration<T> : EntityTypeConfiguration<T> where T : BaseEntity
     {
+        protected BaseEntityConfiguration()
+        {
+            Property(e => e.IsDeleted).HasColumnName("IsDeleted");
+
+            HasKey(e => e.Id);
+        }
     }
 }

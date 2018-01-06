@@ -11,54 +11,57 @@ namespace wR.DAL.Migrations
                 "dbo.GuessAttempts",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
-                        SourceContent = c.String(),
+                        GuessAttemptId = c.Guid(nullable: false, identity: true),
+                        GuessSource = c.String(nullable: false),
                         SourceLanguageId = c.Guid(nullable: false),
-                        DestinationContent = c.String(),
+                        GuessDestination = c.String(nullable: false),
                         DestinationLanguageId = c.Guid(nullable: false),
-                        MeaningRetained = c.Boolean(nullable: false),
-                        MarkedAsCorrect = c.Boolean(nullable: false),
-                        Correct = c.Boolean(nullable: false),
+                        TranslationRowId = c.Guid(nullable: false),
+                        GuessedTime = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
+                        IsMeaningRetained = c.Boolean(nullable: false),
+                        IsMarkedAsCorrect = c.Boolean(nullable: false),
+                        WasCorrectlyAnswered = c.Boolean(nullable: false),
+                        IsDeleted = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Languages", t => t.DestinationLanguageId, cascadeDelete: true)
-                .ForeignKey("dbo.Languages", t => t.SourceLanguageId, cascadeDelete: true)
-                .Index(t => t.SourceLanguageId)
-                .Index(t => t.DestinationLanguageId);
+                .PrimaryKey(t => t.GuessAttemptId)
+                .ForeignKey("dbo.Languages", t => t.DestinationLanguageId)
+                .ForeignKey("dbo.Languages", t => t.SourceLanguageId)
+                .ForeignKey("dbo.TranslationRow", t => t.TranslationRowId);
             
             CreateTable(
                 "dbo.Languages",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
-                        Name = c.String(),
-                        Code = c.String(),
+                        LanguageId = c.Guid(nullable: false, identity: true),
+                        LanguageName = c.String(),
+                        LanguageCode = c.String(),
+                        IsDeleted = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.LanguageId);
             
             CreateTable(
-                "dbo.TranslationRows",
+                "dbo.TranslationRow",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
-                        English = c.String(),
-                        German = c.String(),
-                        French = c.String(),
-                        Polish = c.String(),
-                        Spanish = c.String(),
-                        Italian = c.String(),
+                        TranslationRowId = c.Guid(nullable: false, identity: true),
+                        EnglishTranslation = c.String(),
+                        GermanTranslation = c.String(),
+                        FrenchTranslation = c.String(),
+                        PolishTranslation = c.String(),
+                        SpanishTranslation = c.String(),
+                        ItalianTranslation = c.String(),
+                        IsDeleted = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.TranslationRowId);
             
         }
         
         public override void Down()
         {
+            DropForeignKey("dbo.GuessAttempts", "TranslationRowId", "dbo.TranslationRow");
             DropForeignKey("dbo.GuessAttempts", "SourceLanguageId", "dbo.Languages");
             DropForeignKey("dbo.GuessAttempts", "DestinationLanguageId", "dbo.Languages");
-            DropIndex("dbo.GuessAttempts", new[] { "DestinationLanguageId" });
-            DropIndex("dbo.GuessAttempts", new[] { "SourceLanguageId" });
-            DropTable("dbo.TranslationRows");
+            DropTable("dbo.TranslationRow");
             DropTable("dbo.Languages");
             DropTable("dbo.GuessAttempts");
         }

@@ -49,6 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
+    <Compile Include="Configurations\BaseEntityConfiguration.cs" />
+    <Compile Include="Configurations\GuessAttemptConfiguration.cs" />
+    <Compile Include="Configurations\LanguageConfiguration.cs" />
+    <Compile Include="Configurations\TranslationRowConfiguration.cs" />
     <Compile Include="Migrations\201801061702069_Initial.cs" />
     <Compile Include="Migrations\201801061702069_Initial.Designer.cs">
       <DependentUpon>201801061702069_Initial.cs</DependentUpon>

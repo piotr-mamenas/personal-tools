@@ -1,4 +1,6 @@
-﻿namespace wR.Core.Domain
+﻿using System.Collections.Generic;
+
+namespace wR.Core.Domain
 {
     /// <summary>
     /// A row containing potential translation of a word or sentence between different
@@ -17,5 +19,7 @@
         public string Spanish { get; set; }
 
         public string Italian { get; set; }
+
+        public ICollection<GuessAttempt> GuessAttempts { get; set; }
     }
 }

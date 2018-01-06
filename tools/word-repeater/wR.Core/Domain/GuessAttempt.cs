@@ -22,6 +22,14 @@ namespace wR.Core.Domain
         public Language DestinationLanguage { get; set; }
         public Guid DestinationLanguageId { get; set; }
 
+        public TranslationRow TranslationRow { get; set; }
+        public Guid TranslationRowId { get; set; }
+
+        /// <summary>
+        /// The time at which the guess was made
+        /// </summary>
+        public DateTime Timestamp { get; set; }
+
         /// <summary>
         /// Did your guess retain the original meaning of the translated word?
         /// </summary>

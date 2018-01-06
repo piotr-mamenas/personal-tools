@@ -1,4 +1,5 @@
-﻿using wR.Core.Domain;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using wR.Core.Domain;
 
 namespace wR.DAL.Configurations
 {
@@ -6,7 +7,15 @@ namespace wR.DAL.Configurations
     {
         public LanguageConfiguration()
         {
-            
+            ToTable("Languages");
+
+            Property(ga => ga.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity)
+                .HasColumnName("LanguageId");
+
+            Property(l => l.Name).HasColumnName("LanguageName");
+
+            Property(l => l.Code).HasColumnName("LanguageCode");
         }
     }
 }
