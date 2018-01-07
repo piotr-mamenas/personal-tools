@@ -1,0 +1,34 @@
+﻿@model wR.Web.ViewModels.ChangeConfigurationVm
+@{
+    ViewBag.Title = "Configuration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Change", "Configuration", FormMethod.Post, new {@class = "form-horizontal", @style = "height: 360px; margin-top:20px; padding-left: 30px; padding-right: 30px;" }))
+{
+    <fieldset>
+        <div class="col-xs-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.SourceLanguageId)
+                @Html.DropDownListFor(m => m.SourceLanguageId, Model.SourceLanguageSelection, new {@class = "form-control"})
+                @Html.ValidationMessageFor(m => m.SourceLanguageId, null, new {@class = "label label-danger pull-right"})
+                <br/>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.DestinationLanguageId)
+                @Html.DropDownListFor(m => m.DestinationLanguageId, Model.DestinationLanguageSelection, new {@class = "form-control"})
+                @Html.ValidationMessageFor(m => m.DestinationLanguageId, null, new {@class = "label label-danger pull-right"})
+                <br/>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.IsFlipModeOn)
+                @Html.CheckBoxFor(m => m.IsFlipModeOn)
+                @Html.ValidationMessageFor(m => m.IsFlipModeOn, null, new {@class = "label label-danger pull-right"})
+            </div>
+        </div>
+    </fieldset>
+
+    <br />
+    <div class="form-group pull-right">
+        <input id="Save" type="submit" class="btn btn-primary pull-right" style="margin-left: 5px;" value="Save" />
+    </div>
+}
