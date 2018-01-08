@@ -42,6 +42,10 @@ namespace wR.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// Fetches the list of available languages from the datastore
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<SelectListItem> GetLanguageSelection()
         {
             var languages = _context.Languages.Select(l => new SelectListItem
