@@ -8,8 +8,6 @@ namespace wR.Web.ViewModels
 {
     public class ChangeConfigurationVm
     {
-        public int? Id { get; set; }
-
         [Required]
         [DisplayName("Source Language")]
         public Guid SourceLanguageId { get; set; }

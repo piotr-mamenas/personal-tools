@@ -18,7 +18,7 @@ namespace wR.Web.Controllers
             _context = new ApplicationDbContext();
         }
 
-        [Route("")]
+        [Route(""), HttpGet]
         public ActionResult Index()
         {
             var changeConfigurationVm = new ChangeConfigurationVm
@@ -32,9 +32,14 @@ namespace wR.Web.Controllers
             return View(changeConfigurationVm);
         }
 
+        [Route(""), HttpPost]
         public ActionResult Change(ChangeConfigurationVm changeViewModel)
         {
-            return RedirectToAction("Index");
+            ConfigurationManager.AppSettings["SourceLanguage"] = changeViewModel.SourceLanguageId.ToString();
+            ConfigurationManager.AppSettings["DestinationLanguage"] = changeViewModel.DestinationLanguageId.ToString();
+            ConfigurationManager.AppSettings["FlipMode"] = changeViewModel.IsFlipModeOn.ToString();
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IEnumerable<SelectListItem> GetLanguageSelection()
