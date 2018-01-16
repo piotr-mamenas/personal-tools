@@ -1,8 +1,23 @@
-﻿
+﻿@model wR.Web.ViewModels.SubmitGuessVm
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Flipcard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using (Html.BeginForm("SubmitGuess", "Guessing", FormMethod.Post, new { @class = "form-horizontal", @style = "height: 360px; margin-top:20px; padding-left: 30px; padding-right: 30px;" }))
+{
+    <fieldset>
+        <div class="col-xs-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.SourceText, new { @class = "label label-default"})
+                @Html.TextBoxFor(m => m.SourceText, new { @class = "form-control"})
+                @Html.ValidationMessageFor(m => m.SourceText, null, new { @class = "label label-danger"})
+                <br />
+            </div>
+        </div>
+    </fieldset>
 
-<h2>Index</h2>
-
+    <br />
+    <div class="form-group pull-right">
+        <input id="Save" type="submit" class="btn btn-primary pull-right" style="margin-left: 5px;" value="Save" />
+    </div>
+}

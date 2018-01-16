@@ -17,8 +17,8 @@ namespace wR.DAL.Configurations
                 .WithMany()
                 .HasForeignKey(ga => ga.SourceLanguageId);
 
-            Property(ga => ga.SourceContent)
-                .HasColumnName("GuessSource")
+            Property(ga => ga.SourceText)
+                .HasColumnName("SourceText")
                 .IsRequired();
 
             HasRequired(ga => ga.TranslationRow)
@@ -29,20 +29,16 @@ namespace wR.DAL.Configurations
                 .WithMany()
                 .HasForeignKey(ga => ga.DestinationLanguageId);
 
-            Property(ga => ga.DestinationContent)
-                .HasColumnName("GuessDestination")
+            Property(ga => ga.TranslatedText)
+                .HasColumnName("Translation")
                 .IsRequired();
 
-            Property(ga => ga.MarkedAsCorrect)
-                .HasColumnName("IsMarkedAsCorrect")
-                .IsRequired();
-
-            Property(ga => ga.MeaningRetained)
-                .HasColumnName("IsMeaningRetained")
+            Property(ga => ga.MarkedCorrect)
+                .HasColumnName("IsMarkedCorrect")
                 .IsRequired();
 
             Property(ga => ga.Correct)
-                .HasColumnName("WasCorrectlyAnswered")
+                .HasColumnName("IsCorrect")
                 .IsRequired();
 
             Property(ga => ga.Timestamp)
