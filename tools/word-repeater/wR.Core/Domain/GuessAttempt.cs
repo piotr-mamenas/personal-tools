@@ -39,5 +39,25 @@ namespace wR.Core.Domain
         /// Was the guess identical to what is stored on the database?
         /// </summary>
         public bool Correct { get; set; }
+
+        public GuessAttempt RecordCorrectGuess(string sourceText, 
+            string translatedText, 
+            Language sourceLanguage, 
+            Language destinationLanguage, 
+            bool markedCorrect)
+        {
+            SourceText = sourceText;
+            TranslatedText = translatedText;
+            SourceLanguage = sourceLanguage;
+            SourceLanguageId = sourceLanguage.Id;
+            DestinationLanguage = destinationLanguage;
+            DestinationLanguageId = destinationLanguage.Id;
+            MarkedCorrect = markedCorrect;
+
+            Timestamp = DateTime.UtcNow;
+            Correct = true;
+
+            return this;
+        }
     }
 }

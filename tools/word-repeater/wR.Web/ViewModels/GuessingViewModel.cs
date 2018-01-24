@@ -11,17 +11,21 @@ namespace wR.Web.ViewModels
         [Required]
         public Guid TranslationRowGuid { get; set; }
 
-        [DisplayName("Source")]
         [Required]
+        [DisplayName("Source")]
         public string SourceText { get; set; }
 
-        [DisplayName("Translation")]
         [Required]
+        [DisplayName("Translation")]
         public string TranslatedText { get; set; }
 
-        [Required]
         public bool MarkedCorrect { get; set; }
 
         public IEnumerable<TranslationRow> AllRowTranslations { get; set; }
+
+        public GuessingViewModel()
+        {
+            AllRowTranslations = new List<TranslationRow>();
+        }
     }
 }

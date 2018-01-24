@@ -70,11 +70,21 @@ namespace wR.Web.Controllers
 
                 if (indexVm.TranslatedText == correctTranslation)
                 {
+                    var committedGuess = new GuessAttempt();
+                    var sourceLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == _sourceLanguageGuid);
+
+                    _context.GuessAttempts.Add(committedGuess.RecordCorrectGuess(indexVm.SourceText,
+                        indexVm.TranslatedText, 
+                        sourceLanguage, 
+                        targetLanguage, 
+                        indexVm.MarkedCorrect));
+
                     RedirectToAction("Index");
                 }
             }
-            
-            return RedirectToAction("Index");
+
+            indexVm.TranslatedText = null;
+            return View("Index", indexVm);
         }
     }
 }
