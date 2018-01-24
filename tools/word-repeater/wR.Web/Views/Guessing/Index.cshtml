@@ -1,23 +1,44 @@
-﻿@model wR.Web.ViewModels.SubmitGuessVm
+﻿@model wR.Web.ViewModels.GuessingViewModel
 @{
     ViewBag.Title = "Flipcard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using (Html.BeginForm("SubmitGuess", "Guessing", FormMethod.Post, new { @class = "form-horizontal", @style = "height: 360px; margin-top:20px; padding-left: 30px; padding-right: 30px;" }))
+
+@Html.AntiForgeryToken()
+<div class="row" style="margin-top: 20px;">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th scope="col">@Html.LabelFor(m => m.SourceText)</th>
+            <th scope="col">@Html.LabelFor(m => m.TranslatedText)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">@Model.SourceText</th>
+            <td>@Model.TranslatedText</td>
+        </tr>
+        </tbody>
+    </table>    
+</div>
+
+<br />
+@using (Html.BeginForm("SubmitGuess", "Guessing", FormMethod.Post, new { @class = "form-inline", @style = "height: 360px; padding-left: 30px; padding-right: 30px;" }))
 {
     <fieldset>
-        <div class="col-xs-4">
+        <div class="col-xs-8">
+            <div class="form-group" style="margin-left: 30px;">
+                @Html.LabelFor(m => m.TranslatedText, new { @class = "label label-default" })
+                @Html.TextBoxFor(m => m.TranslatedText, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TranslatedText, null, new { @class = "label label-danger" })
+            </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.SourceText, new { @class = "label label-default"})
-                @Html.TextBoxFor(m => m.SourceText, new { @class = "form-control"})
-                @Html.ValidationMessageFor(m => m.SourceText, null, new { @class = "label label-danger"})
-                <br />
+                @Html.CheckBoxFor(m => m.MarkedCorrect, new { @class="pull-right" })
+            </div>
+            <div class="form-group pull-right">
+                <input id="Save" type="submit" class="btn btn-primary pull-right" style="margin-left: 5px;" value="Submit" />
             </div>
         </div>
     </fieldset>
-
     <br />
-    <div class="form-group pull-right">
-        <input id="Save" type="submit" class="btn btn-primary pull-right" style="margin-left: 5px;" value="Save" />
-    </div>
 }

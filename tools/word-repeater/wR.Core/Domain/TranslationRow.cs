@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace wR.Core.Domain
 {
@@ -21,5 +22,29 @@ namespace wR.Core.Domain
         public string Italian { get; set; }
 
         public ICollection<GuessAttempt> GuessAttempts { get; set; }
+
+        public string GetTranslationByLanguageCode(string code)
+        {
+            switch (code)
+            {
+                case "EN":
+                    return English;
+
+                case "DE":
+                    return German;
+
+                case "FR":
+                    return French;
+
+                case "PL":
+                    return Polish;
+
+                case "ES":
+                    return Spanish;
+
+                default:
+                    throw new ArgumentException($"Could not find Key: {code}");
+            }
+        }
     }
 }

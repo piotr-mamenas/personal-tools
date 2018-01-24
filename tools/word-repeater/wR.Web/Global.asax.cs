@@ -18,7 +18,7 @@ namespace wR.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<GuessAttempt, SubmitGuessVm>().ReverseMap();
+                cfg.CreateMap<GuessAttempt, GuessingViewModel>().ReverseMap();
             });
         }
     }
