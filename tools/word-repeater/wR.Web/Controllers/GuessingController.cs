@@ -18,6 +18,8 @@ namespace wR.Web.Controllers
         private readonly ApplicationDbContext _context;
         private readonly GuessingService _service;
         private readonly IDictionary<Guid, TranslationRow> _guessingSet;
+        private readonly Guid _sourceLanguageGuid;
+        private readonly Guid _targetLanguageGuid;
 
         public GuessingController()
         {
@@ -27,6 +29,9 @@ namespace wR.Web.Controllers
             _guessingSet = _context.TranslationRows
                 .Where(tr => tr.GuessAttempts.Count < 3)
                 .ToDictionary(tr => tr.Id);
+
+            _sourceLanguageGuid = Guid.Parse(ConfigurationManager.AppSettings["SourceLanguage"]);
+            _targetLanguageGuid = Guid.Parse(ConfigurationManager.AppSettings["DestinationLanguage"]);
         }
 
         [Route(""), HttpGet]
@@ -35,9 +40,8 @@ namespace wR.Web.Controllers
             var randomizer = new Random();
 
             var guessRow = _guessingSet.ElementAt(randomizer.Next(0,_guessingSet.Count)).Value;
-
-            var sourceLanguageGuid = Guid.Parse(ConfigurationManager.AppSettings["SourceLanguage"]);
-            var sourceLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == sourceLanguageGuid);
+            
+            var sourceLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == _sourceLanguageGuid);
             
             var guessingVm = new GuessingViewModel
             {
@@ -52,13 +56,24 @@ namespace wR.Web.Controllers
         }
 
         [Route("submit"), HttpPost]
-        public ActionResult SubmitGuess(GuessingViewModel indexVm)
+        public async Task<ActionResult> SubmitGuess(GuessingViewModel indexVm)
         {
             if (!ModelState.IsValid)
             {
                 return View("Index",indexVm);
             }
 
+            foreach (var translation in indexVm.AllRowTranslations)
+            {
+                var targetLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == _targetLanguageGuid);
+                var correctTranslation = translation.GetTranslationByLanguageCode(targetLanguage.Code);
+
+                if (indexVm.TranslatedText == correctTranslation)
+                {
+                    RedirectToAction("Index");
+                }
+            }
+            
             return RedirectToAction("Index");
         }
     }
