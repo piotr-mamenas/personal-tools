@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using wR.Core.Domain;
 using wR.DAL;
@@ -28,18 +30,18 @@ namespace wR.Web.Controllers
         }
 
         [Route(""), HttpGet]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             var randomizer = new Random();
 
             var guessRow = _guessingSet.ElementAt(randomizer.Next(0,_guessingSet.Count)).Value;
 
             var sourceLanguageGuid = Guid.Parse(ConfigurationManager.AppSettings["SourceLanguage"]);
-            var sourceLanguage = _context.Languages.SingleOrDefault(l => l.Id == sourceLanguageGuid);
+            var sourceLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == sourceLanguageGuid);
             
             var guessingVm = new GuessingViewModel
             {
-                AllRowTranslations = _service.GetTranslations(sourceLanguage?.Code, guessRow.GetTranslationByLanguageCode(sourceLanguage?.Code)),
+                AllRowTranslations = await _service.GetTranslations(sourceLanguage?.Code, guessRow.GetTranslationByLanguageCode(sourceLanguage?.Code)),
                 MarkedCorrect = false,
                 SourceText = guessRow.GetTranslationByLanguageCode(sourceLanguage?.Code),
                 TranslatedText = null,
@@ -52,6 +54,11 @@ namespace wR.Web.Controllers
         [Route("submit"), HttpPost]
         public ActionResult SubmitGuess(GuessingViewModel indexVm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("Index",indexVm);
+            }
+
             return RedirectToAction("Index");
         }
     }

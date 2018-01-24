@@ -162,7 +162,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\GuessingService.cs" />
     <Compile Include="ViewModels\ChangeConfigurationVm.cs" />
-    <Compile Include="ViewModels\GuessingVIewModel.cs" />
+    <Compile Include="ViewModels\GuessingViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />

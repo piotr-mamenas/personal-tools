@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using wR.Core.Domain;
 using wR.DAL;
 
@@ -22,28 +23,37 @@ namespace wR.Web.Services
         /// <param name="languageCode">"EN"</param>
         /// <param name="sourceText">"Word"</param>
         /// <returns></returns>
-        public IEnumerable<TranslationRow> GetTranslations(string languageCode, string sourceText)
+        public async Task<IEnumerable<TranslationRow>> GetTranslations(string languageCode, string sourceText)
         {
+            IQueryable<TranslationRow> result;
+
             switch (languageCode)
             {
                 case "EN":
-                    return _context.TranslationRows.Where(tr => tr.English == sourceText);
+                    result = _context.TranslationRows.Where(tr => tr.English == sourceText);
+                    break;
 
                 case "DE":
-                    return _context.TranslationRows.Where(tr => tr.German == sourceText);
+                    result = _context.TranslationRows.Where(tr => tr.German == sourceText);
+                    break;
 
                 case "FR":
-                    return _context.TranslationRows.Where(tr => tr.French == sourceText);
+                    result = _context.TranslationRows.Where(tr => tr.French == sourceText);
+                    break;
 
                 case "PL":
-                    return _context.TranslationRows.Where(tr => tr.Polish == sourceText);
+                    result = _context.TranslationRows.Where(tr => tr.Polish == sourceText);
+                    break;
 
                 case "ES":
-                    return _context.TranslationRows.Where(tr => tr.Spanish == sourceText);
+                    result = _context.TranslationRows.Where(tr => tr.Spanish == sourceText);
+                    break;
 
                 default:
                     return null;
             }
+
+            return await result.ToListAsync();
         }
     }
 }
