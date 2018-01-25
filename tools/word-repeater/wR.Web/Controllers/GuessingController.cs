@@ -63,21 +63,22 @@ namespace wR.Web.Controllers
                 return View("Index",indexVm);
             }
 
+            var sourceLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == _sourceLanguageGuid);
+            var targetLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == _targetLanguageGuid);
+
             foreach (var translation in indexVm.AllRowTranslations)
             {
-                var targetLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == _targetLanguageGuid);
                 var correctTranslation = translation.GetTranslationByLanguageCode(targetLanguage.Code);
 
                 if (indexVm.TranslatedText == correctTranslation)
                 {
-                    var committedGuess = new GuessAttempt();
-                    var sourceLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == _sourceLanguageGuid);
-
-                    _context.GuessAttempts.Add(committedGuess.GetCorrectGuess(indexVm.SourceText,
+                    var successfulGuess = new GuessAttempt();
+                    _context.GuessAttempts.Add(successfulGuess.GetGuessAttempt(indexVm.SourceText,
                         indexVm.TranslatedText, 
                         sourceLanguage, 
                         targetLanguage, 
                         translation.Id,
+                        true,
                         indexVm.MarkedCorrect));
 
                     await _context.SaveChangesAsync();
@@ -85,6 +86,17 @@ namespace wR.Web.Controllers
                     RedirectToAction("Index");
                 }
             }
+
+            var failedGuess = new GuessAttempt();
+            _context.GuessAttempts.Add(failedGuess.GetGuessAttempt(indexVm.SourceText,
+                indexVm.TranslatedText,
+                sourceLanguage,
+                targetLanguage,
+                indexVm.TranslationRowGuid,
+                false,
+                indexVm.MarkedCorrect));
+
+            await _context.SaveChangesAsync();
 
             indexVm.TranslatedText = null;
             return View("Index", indexVm);
