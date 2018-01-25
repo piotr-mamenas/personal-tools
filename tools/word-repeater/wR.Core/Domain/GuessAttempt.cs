@@ -40,10 +40,11 @@ namespace wR.Core.Domain
         /// </summary>
         public bool Correct { get; set; }
 
-        public GuessAttempt RecordCorrectGuess(string sourceText, 
+        public GuessAttempt GetCorrectGuess(string sourceText, 
             string translatedText, 
             Language sourceLanguage, 
             Language destinationLanguage, 
+            Guid translationRowGuid,
             bool markedCorrect)
         {
             SourceText = sourceText;
@@ -52,6 +53,7 @@ namespace wR.Core.Domain
             SourceLanguageId = sourceLanguage.Id;
             DestinationLanguage = destinationLanguage;
             DestinationLanguageId = destinationLanguage.Id;
+            TranslationRowId = translationRowGuid;
             MarkedCorrect = markedCorrect;
 
             Timestamp = DateTime.UtcNow;

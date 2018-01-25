@@ -1,4 +1,5 @@
-﻿@model wR.Web.ViewModels.GuessingViewModel
+﻿@using wR.Web.Extensions
+@model wR.Web.ViewModels.GuessingViewModel
 @{
     ViewBag.Title = "Flipcard";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -25,10 +26,7 @@
 <br />
 @using (Html.BeginForm("SubmitGuess", "Guessing", FormMethod.Post, new { @class = "form-inline", @style = "height: 360px; padding-left: 30px; padding-right: 30px;" }))
 {
-    foreach(var subModel in Model.AllRowTranslations)
-    {
-        @Html.HiddenFor(m => subModel)
-    }
+    @Html.HiddenForEnumerable(m => m.AllRowTranslations, h => h.Id, h => h.English, h => h.French, h => h.German, h => h.Italian, h => h.Polish, h => h.Spanish, h => h.Id)
     @Html.HiddenFor(m => m.TranslationRowGuid)
     @Html.HiddenFor(m => m.SourceText)
     <fieldset>

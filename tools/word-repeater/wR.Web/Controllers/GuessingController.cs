@@ -73,11 +73,14 @@ namespace wR.Web.Controllers
                     var committedGuess = new GuessAttempt();
                     var sourceLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == _sourceLanguageGuid);
 
-                    _context.GuessAttempts.Add(committedGuess.RecordCorrectGuess(indexVm.SourceText,
+                    _context.GuessAttempts.Add(committedGuess.GetCorrectGuess(indexVm.SourceText,
                         indexVm.TranslatedText, 
                         sourceLanguage, 
                         targetLanguage, 
+                        translation.Id,
                         indexVm.MarkedCorrect));
+
+                    await _context.SaveChangesAsync();
 
                     RedirectToAction("Index");
                 }
