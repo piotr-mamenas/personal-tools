@@ -11,13 +11,13 @@
         <thead>
             <tr>
                 <th scope="col">@Html.LabelFor(m => m.SourceText)</th>
-                <th scope="col">@Html.LabelFor(m => m.TranslatedText)</th>
+                <th scope="col">@Html.LabelFor(m => m.CorrectlyTranslatedText)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <th scope="row">@Model.SourceText</th>
-                <td>@Model.TranslatedText</td>
+                <th scope="row">@Model.CorrectlyTranslatedText</th>
             </tr>
         </tbody>
     </table>
@@ -36,11 +36,9 @@
                 @Html.TextBoxFor(m => m.TranslatedText, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.TranslatedText, null, new { @class = "label label-danger" })
             </div>
-            <div class="form-group">
-                @Html.CheckBoxFor(m => m.MarkedCorrect, new { @class = "pull-right" })
-            </div>
             <div class="form-group pull-right">
-                <input id="Save" type="submit" class="btn btn-primary pull-right" style="margin-left: 5px;" value="Submit" />
+                <input type="submit" name="CheckButton" class="btn btn-primary pull-right" style="margin-left: 5px;" value="Submit Check"/>
+                <input type="submit" name="ForceButton" class="btn btn-default" value="Force" />
             </div>
         </div>
     </fieldset>

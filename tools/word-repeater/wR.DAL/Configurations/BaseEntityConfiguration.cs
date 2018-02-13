@@ -7,8 +7,6 @@ namespace wR.DAL.Configurations
     {
         protected BaseEntityConfiguration()
         {
-            Property(e => e.IsDeleted).HasColumnName("IsDeleted");
-
             HasKey(e => e.Id);
         }
     }

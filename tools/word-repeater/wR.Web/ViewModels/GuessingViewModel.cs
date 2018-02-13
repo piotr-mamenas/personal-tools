@@ -19,6 +19,9 @@ namespace wR.Web.ViewModels
         [DisplayName("Translation")]
         public string TranslatedText { get; set; }
 
+        [DisplayName("Translation")]
+        public string CorrectlyTranslatedText { get; set; }
+
         public bool MarkedCorrect { get; set; }
 
         public IEnumerable<TranslationRow> AllRowTranslations { get; set; }

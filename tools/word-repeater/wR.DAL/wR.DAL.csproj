@@ -54,6 +54,10 @@
     <Compile Include="Migrations\201801162039584_ChangedNamingToClearedAndCleanup.Designer.cs">
       <DependentUpon>201801162039584_ChangedNamingToClearedAndCleanup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802132013388_RemovingUnnecessaryIsDeletedProp.cs" />
+    <Compile Include="Migrations\201802132013388_RemovingUnnecessaryIsDeletedProp.Designer.cs">
+      <DependentUpon>201802132013388_RemovingUnnecessaryIsDeletedProp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -73,6 +77,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801162039584_ChangedNamingToClearedAndCleanup.resx">
       <DependentUpon>201801162039584_ChangedNamingToClearedAndCleanup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802132013388_RemovingUnnecessaryIsDeletedProp.resx">
+      <DependentUpon>201802132013388_RemovingUnnecessaryIsDeletedProp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

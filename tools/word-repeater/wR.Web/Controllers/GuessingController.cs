@@ -38,8 +38,7 @@ namespace wR.Web.Controllers
         public async Task<ActionResult> Index()
         {
             var randomizer = new Random();
-
-            var guessRow = _guessingSet.ElementAt(randomizer.Next(0,_guessingSet.Count)).Value;
+            var guessRow = _guessingSet.ElementAt(randomizer.Next(0,_guessingSet.Count-1)).Value;
             
             var sourceLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == _sourceLanguageGuid);
             
@@ -56,11 +55,20 @@ namespace wR.Web.Controllers
         }
 
         [Route("submit"), HttpPost]
-        public async Task<ActionResult> SubmitGuess(GuessingViewModel indexVm)
+        public async Task<ActionResult> SubmitGuess(string checkButton, string forceButton, GuessingViewModel indexVm)
         {
             if (!ModelState.IsValid)
             {
                 return View("Index",indexVm);
+            }
+
+            if (checkButton != null)
+            {
+                indexVm.MarkedCorrect = false;
+            }
+            else
+            {
+                indexVm.MarkedCorrect = true;
             }
 
             var sourceLanguage = await _context.Languages.SingleOrDefaultAsync(l => l.Id == _sourceLanguageGuid);
@@ -69,36 +77,39 @@ namespace wR.Web.Controllers
             foreach (var translation in indexVm.AllRowTranslations)
             {
                 var correctTranslation = translation.GetTranslationByLanguageCode(targetLanguage.Code);
+                indexVm.CorrectlyTranslatedText = correctTranslation;
 
                 if (indexVm.TranslatedText == correctTranslation)
                 {
                     var successfulGuess = new GuessAttempt();
                     _context.GuessAttempts.Add(successfulGuess.GetGuessAttempt(indexVm.SourceText,
-                        indexVm.TranslatedText, 
-                        sourceLanguage, 
-                        targetLanguage, 
+                        indexVm.TranslatedText,
+                        sourceLanguage,
+                        targetLanguage,
                         translation.Id,
                         true,
                         indexVm.MarkedCorrect));
-
+                    
                     await _context.SaveChangesAsync();
 
-                    RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    var failedGuess = new GuessAttempt();
+                    _context.GuessAttempts.Add(failedGuess.GetGuessAttempt(indexVm.SourceText,
+                        indexVm.TranslatedText,
+                        sourceLanguage,
+                        targetLanguage,
+                        indexVm.TranslationRowGuid,
+                        false,
+                        indexVm.MarkedCorrect));
+
+                    await _context.SaveChangesAsync();
                 }
             }
-
-            var failedGuess = new GuessAttempt();
-            _context.GuessAttempts.Add(failedGuess.GetGuessAttempt(indexVm.SourceText,
-                indexVm.TranslatedText,
-                sourceLanguage,
-                targetLanguage,
-                indexVm.TranslationRowGuid,
-                false,
-                indexVm.MarkedCorrect));
-
-            await _context.SaveChangesAsync();
-
             indexVm.TranslatedText = null;
+            indexVm.MarkedCorrect = false;
             return View("Index", indexVm);
         }
     }
